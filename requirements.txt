@@ -1,0 +1,4 @@
+pytz
+vk_api
+requests
+python-dotenv
