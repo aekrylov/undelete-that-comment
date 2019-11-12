@@ -3,6 +3,7 @@ from datetime import datetime
 
 import pytz
 import vk_api
+from vk_api import ApiHttpError
 
 import settings
 from input import CommentSource, Comment
@@ -34,7 +35,15 @@ class VkDiscussionSource(VkSourceBase):
     def check(self):
         m = self.storage
 
-        resp = self.api.board.getComments(group_id=self.group_id, topic_id=self.topic_id, count=100, sort='desc')
+        # TODO proper exception handling
+        # 504 errors are thrown periodically by VK, that's a known issue
+        try:
+            resp = self.api.board.getComments(group_id=self.group_id, topic_id=self.topic_id, count=100, sort='desc')
+        except ApiHttpError as e:
+            if e.response.status_code != 504:
+                raise e
+            resp = e.try_method()
+
         last_comments = [self._to_object(comment) for comment in resp['items']]
 
         present_map = {c.comment_id: c for c in last_comments}
