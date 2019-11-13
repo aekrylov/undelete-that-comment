@@ -16,7 +16,7 @@ class VkDiscussion:
         self.url = f'https://vk.com/topic-{group_id}_{topic_id}'
 
 
-class VkSourceBase(CommentSource, ABC):
+class VkSourceBase(CommentSource):
     api = vk_api.VkApi(app_id=settings.APP_ID, token=settings.APP_TOKEN).get_api()
 
     @staticmethod
