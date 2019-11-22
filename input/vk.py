@@ -36,11 +36,11 @@ class VkDiscussionSource(VkSourceBase):
         m = self.storage
 
         # TODO proper exception handling
-        # 504 errors are thrown periodically by VK, that's a known issue
+        # 5xx errors are thrown periodically by VK, that's a known issue
         try:
             resp = self.api.board.getComments(group_id=self.group_id, topic_id=self.topic_id, count=100, sort='desc')
         except ApiHttpError as e:
-            if e.response.status_code != 504:
+            if e.response.status_code < 500:
                 raise e
             resp = e.try_method()
 
