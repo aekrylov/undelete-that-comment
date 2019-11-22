@@ -44,6 +44,7 @@ class VkDiscussionSource(VkSourceBase):
         except ApiHttpError as e:
             if e.response.status_code < 500:
                 raise e
+            print(e)
             resp = e.try_method()
 
         last_comments = [self._to_object(comment) for comment in resp['items']]
