@@ -25,7 +25,7 @@ class TelegramNotifier(Notifier):
                 'parse_mode': 'Markdown',
                 'reply_markup': json.dumps({
                     'inline_keyboard': [[{
-                        'text': 'Go to discussion',
+                        'text': f'➡ {comment.discussion.name}',
                         'url': comment.discussion.url
                     }]]
                 })
