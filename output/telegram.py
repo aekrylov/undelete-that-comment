@@ -20,7 +20,7 @@ class TelegramNotifier(Notifier):
                 'chat_id': self.target_chat,
                 'text': f'Deleted comment found\n'
                         f'`{comment.date.astimezone(MSK).strftime("%d.%m.%Y %H:%M")}`\n'
-                        f'👤 [{comment.profile_name}]({comment.profile_url})\n'
+                        f'👤 {comment.profile_url}\n'
                         f'{escape_md(comment.text)}\n',
                 'parse_mode': 'Markdown',
                 'reply_markup': json.dumps({
