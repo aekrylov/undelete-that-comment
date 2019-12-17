@@ -47,12 +47,7 @@ class VkDiscussionSource(VkSourceBase):
             print(e)
             resp = e.try_method()
 
-        items = resp['items']
-        if items[0] is int:
-            # First item appears to be some id
-            items = items[1:]
-
-        last_comments = [self._to_object(comment) for comment in items]
+        last_comments = [self._to_object(comment) for comment in resp['items']]
 
         present_map = {c.comment_id: c for c in last_comments}
         m.update(present_map)
