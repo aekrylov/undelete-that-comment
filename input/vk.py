@@ -1,4 +1,3 @@
-from abc import ABC
 from datetime import datetime
 
 import pytz
@@ -10,9 +9,10 @@ from input import CommentSource, Comment
 
 
 class VkDiscussion:
-    def __init__(self, group_id, topic_id):
+    def __init__(self, group_id, topic_id, group_name, topic_name):
         self.group_id = group_id
         self.topic_id = topic_id
+        self.name = f'{group_name}: {topic_name}'
         self.url = f'https://vk.com/topic-{group_id}_{topic_id}'
 
 
@@ -30,7 +30,9 @@ class VkDiscussionSource(VkSourceBase):
         super().__init__(storage)
         self.group_id = group_id
         self.topic_id = topic_id
-        self.discussion = VkDiscussion(group_id, topic_id)
+        group_name = self.api.groups.getById(group_id=group_id)[0]['name']
+        topic_name = self.api.board.getTopics(group_id=group_id, topic_ids=str(topic_id))['items'][0]['title']
+        self.discussion = VkDiscussion(group_id, topic_id, group_name, topic_name)
 
     def check(self):
         m = self.storage
@@ -42,6 +44,7 @@ class VkDiscussionSource(VkSourceBase):
         except ApiHttpError as e:
             if e.response.status_code < 500:
                 raise e
+            print(e)
             resp = e.try_method()
 
         items = resp['items']

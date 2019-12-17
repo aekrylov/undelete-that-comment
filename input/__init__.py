@@ -3,9 +3,10 @@ from datetime import datetime
 
 
 class Comment:
-    def __init__(self, user_id, profile_url, discussion, comment_id: int, text: str, date: datetime, deleted: bool = False):
+    def __init__(self, user_id, profile_url, discussion, comment_id: int, text: str, date: datetime, deleted: bool = False, profile_name: str = None):
         self.user_id = user_id
         self.profile_url = profile_url
+        self.profile_name = profile_name if profile_name else profile_url.split('/')[-1]
         self.discussion = discussion
         self.comment_id = comment_id
         self.text = text

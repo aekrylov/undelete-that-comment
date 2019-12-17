@@ -19,13 +19,13 @@ class TelegramNotifier(Notifier):
             {
                 'chat_id': self.target_chat,
                 'text': f'Deleted comment found\n'
-                        f'*From*: {comment.profile_url}\n'
-                        f'*Date*: `{comment.date.astimezone(MSK)}`\n'
-                        f'*Text*: \n{escape_md(comment.text)}\n',
+                        f'`{comment.date.astimezone(MSK).strftime("%d.%m.%Y %H:%M")}`\n'
+                        f'👤 {comment.profile_url}\n'
+                        f'{escape_md(comment.text)}\n',
                 'parse_mode': 'Markdown',
                 'reply_markup': json.dumps({
                     'inline_keyboard': [[{
-                        'text': 'Go to discussion',
+                        'text': f'{comment.discussion.name}',
                         'url': comment.discussion.url
                     }]]
                 })
